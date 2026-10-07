@@ -6,7 +6,7 @@ import logo from'./assets/classonn-logo.png';
 import sampleNotebook from'./assets/classonn-sample-notebook.png';
 import'./style.css';
 
-const API='http://localhost:5000/api',money=n=>'₹'+Number(n).toLocaleString('en-IN');
+const API='https://classonnplus-mern.onrender.com',money=n=>'₹'+Number(n).toLocaleString('en-IN');
 
 function Nav({cart,user,setUser}){let nav=useNavigate();return <>
   <nav className="site-nav"><Link className="logo" to="/" aria-label="Classonn home"><img src={logo} alt="Classonn+" /></Link>
