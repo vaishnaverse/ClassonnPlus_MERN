@@ -1,0 +1,4 @@
+import express from 'express';import bcrypt from 'bcryptjs';import jwt from 'jsonwebtoken';import User from '../models/User.js';
+const r=express.Router(),tok=u=>jwt.sign({id:u._id,email:u.email},process.env.JWT_SECRET,{expiresIn:'2d'});
+r.post('/register',async(q,s)=>{try{let {name,email,password}=q.body;if(await User.findOne({email}))return s.status(409).json({message:'Email already registered'});let u=await User.create({name,email,password:await bcrypt.hash(password,10)});s.status(201).json({token:tok(u),user:{id:u._id,name:u.name,email:u.email}})}catch(e){s.status(400).json({message:e.message})}});
+r.post('/login',async(q,s)=>{try{let u=await User.findOne({email:q.body.email});if(!u||!(await bcrypt.compare(q.body.password,u.password)))return s.status(401).json({message:'Invalid email or password'});s.json({token:tok(u),user:{id:u._id,name:u.name,email:u.email}})}catch(e){s.status(400).json({message:e.message})}});export default r;
